@@ -69,7 +69,8 @@
 // 702= Minitronics v1.0
 // 90 = Alpha OMCA board
 // 91 = Final OMCA board
-// 301= Rambo
+// 301 = RAMBo
+// 302 = Mini-RAMBo
 // 21 = Elefu Ra Board (v3)
 // 88 = 5DPrint D8 Driver Board
 
