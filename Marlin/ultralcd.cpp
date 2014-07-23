@@ -38,6 +38,42 @@ char lcd_status_message[LCD_WIDTH+1] = WELCOME_MSG;
 #include "ultralcd_implementation_hitachi_HD44780.h"
 #endif
 
+#ifdef MIREGLI // I2C LED from ultimaker fork
+uint8_t led_r, led_g, led_b;
+#define I2C_FREQ 400000
+#define I2C_WRITE   0x00
+#define I2C_LED_ADDRESS 0b1100000
+
+static inline void i2c_start()
+{
+    TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
+}
+static inline void i2c_restart()
+{
+    while (!(TWCR & (1<<TWINT))) {}
+    i2c_start();
+}
+static inline void i2c_send_raw(uint8_t data)
+{
+    while (!(TWCR & (1<<TWINT))) {}
+    TWDR = data;
+    TWCR = (1<<TWINT) | (1<<TWEN);
+}
+static inline void i2c_end()
+{
+    while (!(TWCR & (1<<TWINT))) {}
+    TWCR = (1<<TWINT)|(1<<TWEN)|(1<<TWSTO);
+}
+static void i2c_led_write(uint8_t addr, uint8_t data)
+{
+    i2c_start();
+    i2c_send_raw(I2C_LED_ADDRESS << 1 | I2C_WRITE);
+    i2c_send_raw(addr);
+    i2c_send_raw(data);
+    i2c_end();
+}
+#endif
+
 /** forward declarations **/
 
 void copy_and_scalePID_i();
@@ -1172,6 +1208,24 @@ void lcd_init()
 #ifdef ULTIPANEL
     encoderDiff = 0;
 #endif
+#ifdef MIREGLI
+    //ClockFreq = (F_CPU) / (16 + 2*TWBR * 4^TWPS)
+    //TWBR = ((F_CPU / ClockFreq) - 16)/2*4^TWPS
+    TWBR = ((F_CPU / I2C_FREQ) - 16)/2*1;
+    TWSR = 0x00;
+//lcd_lib_led_color(48,48,60); //Blue
+lcd_lib_led_color(10,60,10); //Green
+
+  i2c_led_write(0, 0x80);//MODE1
+  i2c_led_write(1, 0x1C);//MODE2
+  i2c_led_write(2, led_r);//PWM0
+  i2c_led_write(3, led_g);//PWM1
+  i2c_led_write(4, led_b);//PWM2
+  i2c_led_write(5, 0x00);//PWM3
+  i2c_led_write(6, 0xFF);//GRPPWM
+  i2c_led_write(7, 0x00);//GRPFREQ
+  i2c_led_write(8, 0xAA);//LEDOUT
+#endif
 }
 
 void lcd_update()
@@ -1269,12 +1323,19 @@ void lcd_update()
             lcdDrawUpdate = 2;
         }
 #endif//ULTIPANEL
+
         if (lcdDrawUpdate == 2)
             lcd_implementation_clear();
         if (lcdDrawUpdate)
             lcdDrawUpdate--;
         lcd_next_update_millis = millis() + 100;
     }
+    #ifdef MIREGLI
+i2c_led_write(2, led_r);//PWM0
+    i2c_led_write(3, led_g);//PWM1
+    i2c_led_write(4, led_b);//PWM2
+ #endif
+
 }
 
 void lcd_setstatus(const char* message)
@@ -1622,5 +1683,14 @@ void copy_and_scalePID_d()
   updatePID();
 #endif
 }
+
+#ifdef MIREGLI
+  void lcd_lib_led_color(uint8_t r, uint8_t g, uint8_t b)
+{
+    led_r = r;
+    led_g = g;
+    led_b = b;
+}
+#endif
 
 #endif //ULTRA_LCD
