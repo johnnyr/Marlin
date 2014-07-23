@@ -507,6 +507,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 //#define ULTIPANEL  //the UltiPanel as on Thingiverse
 //#define LCD_FEEDBACK_FREQUENCY_HZ 1000	// this is the tone frequency the buzzer plays when on UI feedback. ie Screen Click
 //#define LCD_FEEDBACK_FREQUENCY_DURATION_MS 100 // the duration the buzzer plays the UI feedback sound. ie Screen Click
+//#define MIREGLI
 
 // The MaKr3d Makr-Panel with graphic controller and SD support
 // http://reprap.org/wiki/MaKr3d_MaKrPanel
@@ -623,6 +624,18 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
   #define ULTIPANEL
 #endif
 
+#if defined (MIREGLI)
+  #define DOGLCD
+  #define SDSUPPORT
+  #define ULTRA_LCD
+  #define ULTIPANEL
+  #define NEWPANEL
+  #define DEFAULT_LCD_CONTRAST 28
+  #define ENCODER_PULSES_PER_STEP 2 // Increase if you have a high resolution encoder
+  #define ENCODER_STEPS_PER_MENU_ITEM 1 // Set according to ENCODER_PULSES_PER_STEP or your liking
+
+#endif
+
 // Shift register panels
 // ---------------------
 // 2 wire Non-latching LCD SR from:
@@ -659,9 +672,9 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
 
 // default LCD contrast for dogm-like LCD displays
 #ifdef DOGLCD
-# ifndef DEFAULT_LCD_CONTRAST
-#  define DEFAULT_LCD_CONTRAST 32
-# endif
+  #ifndef DEFAULT_LCD_CONTRAST
+    #define DEFAULT_LCD_CONTRAST 32
+  #endif
 #endif
 
 // Increase the FAN pwm frequency. Removes the PWM noise but increases heating in the FET/Arduino
