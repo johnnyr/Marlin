@@ -230,7 +230,9 @@ static void lcd_status_screen()
         currentMenu = lcd_main_menu;
         encoderPosition = 0;
         lcd_quick_feedback();
-        lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
+		#ifndef MIREGLI
+          lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
+        #endif
     }
 
 #ifdef ULTIPANEL_FEEDMULTIPLY
@@ -1243,8 +1245,9 @@ void lcd_update()
     {
         lcdDrawUpdate = 2;
         lcd_oldcardstatus = IS_SD_INSERTED;
-        lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
-
+		#ifndef MIREGLI
+            lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
+        #endif
         if(lcd_oldcardstatus)
         {
             card.initsd();
@@ -1295,20 +1298,7 @@ void lcd_update()
             timeoutToStatus = millis() + LCD_TIMEOUT_TO_STATUS;
 #endif//ULTIPANEL
 
-#ifdef DOGLCD        // Changes due to different driver architecture of the DOGM display
-        blink++;     // Variable for fan animation and alive dot
-        u8g.firstPage();
-        do
-        {
-            u8g.setFont(u8g_font_6x10_marlin);
-            u8g.setPrintPos(125,0);
-            if (blink % 2) u8g.setColorIndex(1); else u8g.setColorIndex(0); // Set color for the alive dot
-            u8g.drawPixel(127,63); // draw alive dot
-            u8g.setColorIndex(1); // black on white
-            (*currentMenu)();
-            if (!lcdDrawUpdate)  break; // Terminate display update, when nothing new to draw. This must be done before the last dogm.next()
-        } while( u8g.nextPage() );
-#else
+#ifndef DOGLCD
         (*currentMenu)();
 #endif
 
@@ -1326,16 +1316,24 @@ void lcd_update()
 
         if (lcdDrawUpdate == 2)
             lcd_implementation_clear();
+			#ifdef DOGLCD        // Changes due to different driver architecture of the DOGM display
+        blink++;     // Variable for fan animation and alive dot
+        u8g.firstPage();
+        do
+        {
+            u8g.setFont(u8g_font_6x10_marlin);
+            u8g.setPrintPos(125,0);
+            if (blink % 2) u8g.setColorIndex(1); else u8g.setColorIndex(0); // Set color for the alive dot
+            u8g.drawPixel(127,63); // draw alive dot
+            u8g.setColorIndex(1); // black on white
+            (*currentMenu)();
+            if (!lcdDrawUpdate)  break; // Terminate display update, when nothing new to draw. This must be done before the last dogm.next()
+        } while( u8g.nextPage() );
+      #endif
         if (lcdDrawUpdate)
             lcdDrawUpdate--;
         lcd_next_update_millis = millis() + 100;
     }
-    #ifdef MIREGLI
-i2c_led_write(2, led_r);//PWM0
-    i2c_led_write(3, led_g);//PWM1
-    i2c_led_write(4, led_b);//PWM2
- #endif
-
 }
 
 void lcd_setstatus(const char* message)
