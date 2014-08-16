@@ -230,9 +230,7 @@ static void lcd_status_screen()
         currentMenu = lcd_main_menu;
         encoderPosition = 0;
         lcd_quick_feedback();
-		#ifdef MIREGLI
-          lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
-        #endif
+        lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
     }
 
 #ifdef ULTIPANEL_FEEDMULTIPLY
@@ -1245,9 +1243,8 @@ void lcd_update()
     {
         lcdDrawUpdate = 2;
         lcd_oldcardstatus = IS_SD_INSERTED;
-		#ifndef MIREGLI
-            lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
-        #endif
+        lcd_implementation_init(); // to maybe revive the LCD if static electricity killed it.
+
         if(lcd_oldcardstatus)
         {
             card.initsd();
@@ -1333,12 +1330,12 @@ void lcd_update()
             lcdDrawUpdate--;
         lcd_next_update_millis = millis() + 100;
     }
-/**    #ifdef MIREGLI
+    #ifdef MIREGLI
 i2c_led_write(2, led_r);//PWM0
     i2c_led_write(3, led_g);//PWM1
     i2c_led_write(4, led_b);//PWM2
  #endif
-**/
+
 }
 
 void lcd_setstatus(const char* message)
