@@ -1232,6 +1232,8 @@ lcd_lib_led_color(10,60,10); //Green
 
 void lcd_update()
 {
+    if (lcd_next_update_millis < millis())
+    {
     static unsigned long timeoutToStatus = 0;
 
     #ifdef LCD_HAS_SLOW_BUTTONS
@@ -1260,9 +1262,6 @@ void lcd_update()
         }
     }
     #endif//CARDINSERTED
-
-    if (lcd_next_update_millis < millis())
-    {
 #ifdef ULTIPANEL
 		#ifdef REPRAPWORLD_KEYPAD
         	if (REPRAPWORLD_KEYPAD_MOVE_Z_UP) {
