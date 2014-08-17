@@ -1,9 +1,9 @@
 /*
 
-  Chess.pde
+  HelloWorld.pde
   
-  Little Rook Chess
-
+  "Hello World!" example code.
+  
   >>> Before compiling: Please remove comment from the constructor of the 
   >>> connected graphics display (see below).
   
@@ -36,15 +36,14 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
   
-
 */
 
 
 #include "U8glib.h"
 
 // setup u8g object, please remove comment from one of the following constructor calls
-// IMPORTANT NOTE: The complete list of supported devices is here: http://code.google.com/p/u8glib/wiki/device
-
+// IMPORTANT NOTE: The following list is incomplete. The complete list of supported 
+// devices with all constructor calls is here: http://code.google.com/p/u8glib/wiki/device
 //U8GLIB_NHD27OLED_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_2X_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_GR u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
@@ -56,6 +55,7 @@
 //U8GLIB_DOGS102 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM132 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM128 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
+//U8GLIB_DOGM128_2X u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_ST7920_128X64_1X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_4X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_1X u8g(18, 16, 17);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
@@ -86,10 +86,10 @@
 //U8GLIB_SBN1661_122X32 u8g(8,9,10,11,4,5,6,7,14,15, 17, U8G_PIN_NONE, 16); 	// 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 cs1=14, cs2=15,di=17,rw=16,reset = 16
 //U8GLIB_SSD1306_128X64 u8g(13, 11, 10, 9);	// SW SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_SSD1306_128X64 u8g(10, 9);		// HW SPI Com: CS = 10, A0 = 9 (Hardware Pins are  SCK = 13 and MOSI = 11)
-//U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE);	// HW SPI Com: CS = 10, A0 = 9 (Hardware Pins are  SCK = 13 and MOSI = 11)
+//U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE);	// I2C / TWI 
 //U8GLIB_SSD1306_128X32 u8g(13, 11, 10, 9);	// SW SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_SSD1306_128X32 u8g(10, 9);             // HW SPI Com: CS = 10, A0 = 9 (Hardware Pins are  SCK = 13 and MOSI = 11)
-//U8GLIB_SSD1306_128X32 u8g(U8G_I2C_OPT_NONE);	// HW SPI Com: CS = 10, A0 = 9 (Hardware Pins are  SCK = 13 and MOSI = 11)
+//U8GLIB_SSD1306_128X32 u8g(U8G_I2C_OPT_NONE);	// I2C / TWI 
 //U8GLIB_SSD1309_128X64 u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_SSD1327_96X96_GR u8g(U8G_I2C_OPT_NONE);	// I2C
 //U8GLIB_SSD1327_96X96_2X_GR u8g(U8G_I2C_OPT_NONE);	// I2C
@@ -98,83 +98,58 @@
 //U8GLIB_T6963_240X128 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_240X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_128X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
+//U8GLIB_HT1632_24X16 u8g(3, 2, 4);		// WR = 3, DATA = 2, CS = 4
+//U8GLIB_SSD1351_128X128_332 u8g(13, 11, 8, 9, 7); // Arduino UNO: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(8, 9, 7); // Arduino: HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(8, 9, 7); // Arduino : HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, SW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128GH_332 u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
+//U8GLIB_SSD1351_128X128GH_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
 
 
-// DOGS102 shield configuration values
-uint8_t uiKeyPrev = 2;
-uint8_t uiKeyNext = 4;
-uint8_t uiKeySelect = 5;
-uint8_t uiKeyBack = 3;
-
-// DOGM128-Shield	 configuration values
-// DOGXL60-Shield configuration values
-//uint8_t uiKeyPrev = 7;
-//uint8_t uiKeyNext = 3;
-//uint8_t uiKeySelect = 2;
-//uint8_t uiKeyBack = 8;
-
-uint8_t uiKeyCodeFirst = CHESS_KEY_NONE;
-uint8_t uiKeyCodeSecond = CHESS_KEY_NONE;
-uint8_t uiKeyCode = CHESS_KEY_NONE;
-
-
-void uiSetup(void) {
-  // configure input keys 
-  
-  pinMode(uiKeyPrev, INPUT);           // set pin to input
-  digitalWrite(uiKeyPrev, HIGH);       // turn on pullup resistors
-  pinMode(uiKeyNext, INPUT);           // set pin to input
-  digitalWrite(uiKeyNext, HIGH);       // turn on pullup resistors
-  pinMode(uiKeySelect, INPUT);           // set pin to input
-  digitalWrite(uiKeySelect, HIGH);       // turn on pullup resistors
-  pinMode(uiKeyBack, INPUT);           // set pin to input
-  digitalWrite(uiKeyBack, HIGH);       // turn on pullup resistors
+void draw(void) {
+  // graphic commands to redraw the complete screen should be placed here  
+  u8g.setFont(u8g_font_unifont);
+  //u8g.setFont(u8g_font_osb21);
+  u8g.drawStr( 0, 22, "Hello World!");
 }
 
-void uiStep(void)
-{
-  uiKeyCodeSecond = uiKeyCodeFirst;
-  if ( digitalRead(uiKeyPrev) == LOW )
-    uiKeyCodeFirst = CHESS_KEY_PREV;
-  else if ( digitalRead(uiKeyNext) == LOW )
-    uiKeyCodeFirst = CHESS_KEY_NEXT;
-  else if ( digitalRead(uiKeySelect) == LOW )
-    uiKeyCodeFirst = CHESS_KEY_SELECT;
-  else if ( digitalRead(uiKeyBack) == LOW )
-    uiKeyCodeFirst = CHESS_KEY_BACK;
-  else 
-    uiKeyCodeFirst = CHESS_KEY_NONE;
+void setup(void) {
   
-  if ( uiKeyCodeSecond == uiKeyCodeFirst )
-    uiKeyCode = uiKeyCodeFirst;
-  else
-    uiKeyCode = CHESS_KEY_NONE;
+  // flip screen, if required
+  // u8g.setRot180();
+  
+  // set SPI backup if required
+  //u8g.setHardwareBackup(u8g_backup_avr_spi);
+
+  // assign default color value
+  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
+    u8g.setColorIndex(255);     // white
+  }
+  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
+    u8g.setColorIndex(3);         // max intensity
+  }
+  else if ( u8g.getMode() == U8G_MODE_BW ) {
+    u8g.setColorIndex(1);         // pixel on
+  }
+  else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
+    u8g.setHiColorByRGB(255,255,255);
+  }
 }
 
-
-void setup() {
-  // rotate screen, if required
-  u8g.setRot180();
-  
-  uiSetup();
-  chess_Init(u8g.getU8g(), 0);
-}
-
-void loop() {  
-  uint8_t keyCode = CHESS_KEY_NONE;
-  
-  u8g.firstPage();
+void loop(void) {
+  // picture loop
+  u8g.firstPage();  
   do {
-    chess_Draw();
-    uiStep();
-    if ( uiKeyCode != CHESS_KEY_NONE )
-      keyCode = uiKeyCode;
+    draw();
   } while( u8g.nextPage() );
   
-  u8g_Delay(10);
-  chess_Step(keyCode);
-  uiStep();
-  keyCode = uiKeyCode;
+  // rebuild the picture after some delay
+  delay(500);
 }
-
 

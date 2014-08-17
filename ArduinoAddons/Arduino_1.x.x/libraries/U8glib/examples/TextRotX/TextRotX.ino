@@ -1,9 +1,9 @@
 /*
 
-  Menu.pde
+  TextRotX.pde
   
-  Simple Menu Selection
-
+  Text rotation example code.
+  
   >>> Before compiling: Please remove comment from the constructor of the 
   >>> connected graphics display (see below).
   
@@ -36,15 +36,14 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
   
-
 */
 
 
 #include "U8glib.h"
 
 // setup u8g object, please remove comment from one of the following constructor calls
-// IMPORTANT NOTE: The complete list of supported devices is here: http://code.google.com/p/u8glib/wiki/device
-
+// IMPORTANT NOTE: The following list is incomplete. The complete list of supported 
+// devices with all constructor calls is here: http://code.google.com/p/u8glib/wiki/device
 //U8GLIB_NHD27OLED_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_2X_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_GR u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
@@ -56,6 +55,7 @@
 //U8GLIB_DOGS102 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM132 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM128 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
+//U8GLIB_DOGM128_2X u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_ST7920_128X64_1X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_4X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_1X u8g(18, 16, 17);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
@@ -98,137 +98,70 @@
 //U8GLIB_T6963_240X128 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_240X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_128X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
+//U8GLIB_HT1632_24X16 u8g(3, 2, 4);		// WR = 3, DATA = 2, CS = 4
+//U8GLIB_SSD1351_128X128_332 u8g(13, 11, 8, 9, 7); // Arduino UNO: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(8, 9, 7); // Arduino: HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(8, 9, 7); // Arduino : HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, SW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128GH_332 u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
+//U8GLIB_SSD1351_128X128GH_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
 
-
-#define KEY_NONE 0
-#define KEY_PREV 1
-#define KEY_NEXT 2
-#define KEY_SELECT 3
-#define KEY_BACK 4
-
-// DOGS102 shield configuration values
-//uint8_t uiKeyPrev = 2;
-//uint8_t uiKeyNext = 4;
-//uint8_t uiKeySelect = 5;
-//uint8_t uiKeyBack = 3;
-
-// DOGM128-Shield	 configuration values
-// DOGXL60-Shield configuration values
-uint8_t uiKeyPrev = 7;
-uint8_t uiKeyNext = 3;
-uint8_t uiKeySelect = 2;
-uint8_t uiKeyBack = 8;
-
-uint8_t uiKeyCodeFirst = KEY_NONE;
-uint8_t uiKeyCodeSecond = KEY_NONE;
-uint8_t uiKeyCode = KEY_NONE;
-
-
-void uiSetup(void) {
-  // configure input keys 
+// graphic commands to redraw the complete screen should be placed here  
+void draw(void) {
+  u8g_uint_t mx, my;
   
-  pinMode(uiKeyPrev, INPUT);           // set pin to input
-  digitalWrite(uiKeyPrev, HIGH);       // turn on pullup resistors
-  pinMode(uiKeyNext, INPUT);           // set pin to input
-  digitalWrite(uiKeyNext, HIGH);       // turn on pullup resistors
-  pinMode(uiKeySelect, INPUT);           // set pin to input
-  digitalWrite(uiKeySelect, HIGH);       // turn on pullup resistors
-  pinMode(uiKeyBack, INPUT);           // set pin to input
-  digitalWrite(uiKeyBack, HIGH);       // turn on pullup resistors
+  mx = u8g.getWidth();
+  mx >>= 1;
+  
+  my = u8g.getHeight();
+  my >>= 1;
+  
+  u8g.drawStr( mx, my, "Ag");
+  u8g.drawStr90( mx, my, "Ag");
+  u8g.drawStr180( mx, my, "Ag");
+  u8g.drawStr270( mx, my, "Ag");
 }
 
-void uiStep(void) {
-  uiKeyCodeSecond = uiKeyCodeFirst;
-  if ( digitalRead(uiKeyPrev) == LOW )
-    uiKeyCodeFirst = KEY_PREV;
-  else if ( digitalRead(uiKeyNext) == LOW )
-    uiKeyCodeFirst = KEY_NEXT;
-  else if ( digitalRead(uiKeySelect) == LOW )
-    uiKeyCodeFirst = KEY_SELECT;
-  else if ( digitalRead(uiKeyBack) == LOW )
-    uiKeyCodeFirst = KEY_BACK;
-  else 
-    uiKeyCodeFirst = KEY_NONE;
-  
-  if ( uiKeyCodeSecond == uiKeyCodeFirst )
-    uiKeyCode = uiKeyCodeFirst;
-  else
-    uiKeyCode = KEY_NONE;
+void setup(void) {
+  u8g.setFont(u8g_font_9x18);
 }
 
+void change_font_pos(void) {
+  static  uint8_t dir = 0;
+  static  unsigned long next = 0;
 
-#define MENU_ITEMS 4
-char *menu_strings[MENU_ITEMS] = { "First Line", "Second Item", "3333333", "abcdefg" };
-
-uint8_t menu_current = 0;
-uint8_t menu_redraw_required = 0;
-uint8_t last_key_code = KEY_NONE;
-
-
-void drawMenu(void) {
-  uint8_t i, h;
-  u8g_uint_t w, d;
-
-  u8g.setFont(u8g_font_6x13);
-  u8g.setFontRefHeightText();
-  u8g.setFontPosTop();
-  
-  h = u8g.getFontAscent()-u8g.getFontDescent();
-  w = u8g.getWidth();
-  for( i = 0; i < MENU_ITEMS; i++ ) {
-    d = (w-u8g.getStrWidth(menu_strings[i]))/2;
-    u8g.setDefaultForegroundColor();
-    if ( i == menu_current ) {
-      u8g.drawBox(0, i*h+1, w, h);
-      u8g.setDefaultBackgroundColor();
+  if ( next < millis() )
+  {
+    switch(dir) {
+      case 0: u8g.setFontPosBottom(); break;
+      case 1: u8g.setFontPosBaseline(); break;
+      case 2: u8g.setFontPosCenter(); break;
+      case 3: u8g.setFontPosTop(); break;
     }
-    u8g.drawStr(d, i*h, menu_strings[i]);
-  }
-}
-
-void updateMenu(void) {
-  if ( uiKeyCode != KEY_NONE && last_key_code == uiKeyCode ) {
-    return;
-  }
-  last_key_code = uiKeyCode;
-  
-  switch ( uiKeyCode ) {
-    case KEY_NEXT:
-      menu_current++;
-      if ( menu_current >= MENU_ITEMS )
-        menu_current = 0;
-      menu_redraw_required = 1;
-      break;
-    case KEY_PREV:
-      if ( menu_current == 0 )
-        menu_current = MENU_ITEMS;
-      menu_current--;
-      menu_redraw_required = 1;
-      break;
-  }
-}
-
-
-void setup() {
-  // rotate screen, if required
-  // u8g.setRot180();
-  
-  uiSetup();                                // setup key detection and debounce algorithm
-  menu_redraw_required = 1;     // force initial redraw
-}
-
-void loop() {  
-
-  uiStep();                                     // check for key press
     
-  if (  menu_redraw_required != 0 ) {
-    u8g.firstPage();
-    do  {
-      drawMenu();
-    } while( u8g.nextPage() );
-    menu_redraw_required = 0;
+    dir++;
+    dir &= 3;
+    next = millis();
+    next += 1000;
   }
-
-  updateMenu();                            // update menu bar
-  
 }
+
+void loop(void) {
+  // change the font position  
+  change_font_pos();
+  
+  // picture loop
+  u8g.firstPage();  
+  do {
+    draw();
+  } while( u8g.nextPage() );
+  
+  // rebuild the picture after some delay
+  delay(100);
+}
+

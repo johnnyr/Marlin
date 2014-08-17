@@ -31,6 +31,12 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
   
+  Update for ATOMIC operation done (01 Jun 2013)
+    U8G_ATOMIC_OR(ptr, val)
+    U8G_ATOMIC_AND(ptr, val)
+    U8G_ATOMIC_START();
+    U8G_ATOMIC_END();
+ 
 
 */
 
@@ -47,6 +53,9 @@
 #include <Arduino.h> 
 #include "wiring_private.h"
 #endif
+
+/*=========================================================*/
+/* Arduino, AVR */
 
 #if defined(__AVR__)
 
@@ -79,6 +88,7 @@ static void u8g_com_arduino_do_shift_out_msb_first(uint8_t val)
   uint8_t bitNotClock = u8g_bitNotClock;
   volatile uint8_t *outData = u8g_outData;
   volatile uint8_t *outClock = u8g_outClock;
+  U8G_ATOMIC_START();
   do
   {
     if ( val & 128 )
@@ -91,8 +101,11 @@ static void u8g_com_arduino_do_shift_out_msb_first(uint8_t val)
     cnt--;
     *outClock &= bitNotClock;
   } while( cnt != 0 );
+  U8G_ATOMIC_END();
 }
 
+/*=========================================================*/
+/* Arduino, Chipkit */
 #elif defined(__18CXX) || defined(__PIC32MX)
 
 uint16_t dog_bitData, dog_bitNotData;
@@ -118,6 +131,7 @@ static void u8g_com_arduino_init_shift_out(uint8_t dataPin, uint8_t clockPin)
 static void u8g_com_arduino_do_shift_out_msb_first(uint8_t val)
 {
   uint8_t cnt = 8;
+  U8G_ATOMIC_START();
   do
   {
     if ( val & 128 )
@@ -142,7 +156,53 @@ static void u8g_com_arduino_do_shift_out_msb_first(uint8_t val)
     dog_pic32_spi_tmp = *dog_outClock;
     dog_pic32_spi_tmp = *dog_outClock;
   } while( cnt != 0 );
+  U8G_ATOMIC_END();
 }
+
+/*=========================================================*/
+/* Arduino Due */
+#elif defined(__arm__)
+
+/* Due */
+
+void u8g_digital_write_sam_high(uint8_t pin)
+{
+    PIO_Set( g_APinDescription[pin].pPort, g_APinDescription[pin].ulPin) ;
+}
+
+void u8g_digital_write_sam_low(uint8_t pin)
+{
+    PIO_Clear( g_APinDescription[pin].pPort, g_APinDescription[pin].ulPin) ;
+}
+
+static uint8_t u8g_sam_data_pin;
+static uint8_t u8g_sam_clock_pin;
+
+static void u8g_com_arduino_init_shift_out(uint8_t dataPin, uint8_t clockPin)
+{
+  u8g_sam_data_pin = dataPin;
+  u8g_sam_clock_pin = clockPin;
+}
+
+static void u8g_com_arduino_do_shift_out_msb_first(uint8_t val)
+{
+  uint8_t i = 8;
+  do
+  {
+    if ( val & 128 )
+      u8g_digital_write_sam_high(u8g_sam_data_pin);
+    else
+      u8g_digital_write_sam_low(u8g_sam_data_pin);
+    val <<= 1;
+    //u8g_MicroDelay();	
+    u8g_digital_write_sam_high(u8g_sam_clock_pin);
+    u8g_MicroDelay();	
+    u8g_digital_write_sam_low(u8g_sam_clock_pin);
+    u8g_MicroDelay();	
+    i--;
+  } while( i != 0 );
+}
+
 
 #else
 /* empty interface */

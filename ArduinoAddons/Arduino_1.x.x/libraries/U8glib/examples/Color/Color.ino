@@ -1,6 +1,8 @@
 /*
 
-  GraphicsTest.pde
+  Color.pde
+  
+  "Hello World!" example code with color.
   
   >>> Before compiling: Please remove comment from the constructor of the 
   >>> connected graphics display (see below).
@@ -33,16 +35,15 @@
   STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
   ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  
-
-
+  
 */
 
 
 #include "U8glib.h"
 
 // setup u8g object, please remove comment from one of the following constructor calls
-// IMPORTANT NOTE: The complete list of supported devices is here: http://code.google.com/p/u8glib/wiki/device
-
+// IMPORTANT NOTE: The following list is incomplete. The complete list of supported 
+// devices with all constructor calls is here: http://code.google.com/p/u8glib/wiki/device
 //U8GLIB_NHD27OLED_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_2X_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_GR u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
@@ -54,6 +55,7 @@
 //U8GLIB_DOGS102 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM132 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM128 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
+//U8GLIB_DOGM128_2X u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_ST7920_128X64_1X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_4X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_1X u8g(18, 16, 17);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
@@ -96,128 +98,81 @@
 //U8GLIB_T6963_240X128 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_240X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_128X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
+//U8GLIB_HT1632_24X16 u8g(3, 2, 4);		// WR = 3, DATA = 2, CS = 4
+//U8GLIB_SSD1351_128X128_332 u8g(13, 11, 8, 9, 7); // Arduino UNO: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(8, 9, 7); // Arduino: HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(8, 9, 7); // Arduino : HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, SW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128GH_332 u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
+//U8GLIB_SSD1351_128X128GH_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
 
-void u8g_prepare(void) {
-  u8g.setFont(u8g_font_6x10);
-  u8g.setFontRefHeightExtendedText();
-  u8g.setDefaultForegroundColor();
-  u8g.setFontPosTop();
-}
-
-void u8g_box_frame(uint8_t a) {
-  u8g.drawStr( 0, 0, "drawBox");
-  u8g.drawBox(5,10,20,10);
-  u8g.drawBox(10+a,15,30,7);
-  u8g.drawStr( 0, 30, "drawFrame");
-  u8g.drawFrame(5,10+30,20,10);
-  u8g.drawFrame(10+a,15+30,30,7);
-}
-
-void u8g_disc_circle(uint8_t a) {
-  u8g.drawStr( 0, 0, "drawDisc");
-  u8g.drawDisc(10,18,9);
-  u8g.drawDisc(24+a,16,7);
-  u8g.drawStr( 0, 30, "drawCircle");
-  u8g.drawCircle(10,18+30,9);
-  u8g.drawCircle(24+a,16+30,7);
-}
-
-void u8g_r_frame(uint8_t a) {
-  u8g.drawStr( 0, 0, "drawRFrame/Box");
-  u8g.drawRFrame(5, 10,40,30, a+1);
-  u8g.drawRBox(50, 10,25,40, a+1);
-}
-
-void u8g_string(uint8_t a) {
-  u8g.drawStr(30+a,31, " 0");
-  u8g.drawStr90(30,31+a, " 90");
-  u8g.drawStr180(30-a,31, " 180");
-  u8g.drawStr270(30,31-a, " 270");
-}
-
-void u8g_line(uint8_t a) {
-  u8g.drawStr( 0, 0, "drawLine");
-  u8g.drawLine(7+a, 10, 40, 55);
-  u8g.drawLine(7+a*2, 10, 60, 55);
-  u8g.drawLine(7+a*3, 10, 80, 55);
-  u8g.drawLine(7+a*4, 10, 100, 55);
-}
-
-void u8g_ascii_1() {
-  char s[2] = " ";
-  uint8_t x, y;
-  u8g.drawStr( 0, 0, "ASCII page 1");
-  for( y = 0; y < 6; y++ ) {
-    for( x = 0; x < 16; x++ ) {
-      s[0] = y*16 + x + 32;
-      u8g.drawStr(x*7, y*10+10, s);
-    }
-  }
-}
-
-void u8g_ascii_2() {
-  char s[2] = " ";
-  uint8_t x, y;
-  u8g.drawStr( 0, 0, "ASCII page 2");
-  for( y = 0; y < 6; y++ ) {
-    for( x = 0; x < 16; x++ ) {
-      s[0] = y*16 + x + 160;
-      u8g.drawStr(x*7, y*10+10, s);
-    }
-  }
-}
-
-
-uint8_t draw_state = 0;
 
 void draw(void) {
-  u8g_prepare();
-  switch(draw_state >> 3) {
-    case 0: u8g_box_frame(draw_state&7); break;
-    case 1: u8g_disc_circle(draw_state&7); break;
-    case 2: u8g_r_frame(draw_state&7); break;
-    case 3: u8g_string(draw_state&7); break;
-    case 4: u8g_line(draw_state&7); break;
-    case 5: u8g_ascii_1(); break;
-    case 6: u8g_ascii_2(); break;
+  
+  if ( u8g.getMode() == U8G_MODE_HICOLOR || u8g.getMode() == U8G_MODE_R3G3B2) {
+    /* draw background (area is 128x128) */
+    u8g_uint_t r, g, b;
+    for( b = 0; b < 4; b++ )
+    {
+      for( g = 0; g < 32; g++ )
+      {
+	for( r = 0; r < 32; r++ )
+	{
+	  u8g.setRGB(r<<3, g<<3, b<<4 );
+	  u8g.drawPixel(g + b*32, r);
+	  u8g.setRGB(r<<3, g<<3, (b<<4)+64 );
+	  u8g.drawPixel(g + b*32, r+32);
+	  u8g.setRGB(r<<3, g<<3, (b<<4)+128 );
+	  u8g.drawPixel(g + b*32, r+32+32);
+	  u8g.setRGB(r<<3, g<<3, (b<<4)+128+64 );
+	  u8g.drawPixel(g + b*32, r+32+32+32);
+	}
+      }
+    }
   }
+
+  // assign default color value
+  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) {
+    u8g.setColorIndex(255);     // white
+  }
+  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT ) {
+    u8g.setColorIndex(3);         // max intensity
+  }
+  else if ( u8g.getMode() == U8G_MODE_BW ) {
+    u8g.setColorIndex(1);         // pixel on
+  }
+  else if ( u8g.getMode() == U8G_MODE_HICOLOR ) {
+    u8g.setHiColorByRGB(255,255,255);
+  }
+  u8g.setFont(u8g_font_unifont);
+  u8g.drawStr( 0, 22, "Hello World!");
+  
+  
 }
 
 void setup(void) {
-
+  
   // flip screen, if required
-  //u8g.setRot180();
+  // u8g.setRot180();
+  
+  // set SPI backup if required
+  //u8g.setHardwareBackup(u8g_backup_avr_spi);
 
-  // assign default color value
-  if ( u8g.getMode() == U8G_MODE_R3G3B2 ) 
-    u8g.setColorIndex(255);     // white
-  else if ( u8g.getMode() == U8G_MODE_GRAY2BIT )
-    u8g.setColorIndex(3);         // max intensity
-  else if ( u8g.getMode() == U8G_MODE_BW )
-    u8g.setColorIndex(1);         // pixel on
-  
-  //u8g.setContrast(0x30);
-  
-  pinMode(13, OUTPUT);           
-  digitalWrite(13, HIGH);  
 }
 
 void loop(void) {
-  
-  // picture loop  
+  // picture loop
   u8g.firstPage();  
   do {
     draw();
   } while( u8g.nextPage() );
   
-  // increase the state
-  draw_state++;
-  if ( draw_state >= 7*8 )
-    draw_state = 0;
-  
   // rebuild the picture after some delay
-  delay(150);
-
+  delay(500);
 }
-
 

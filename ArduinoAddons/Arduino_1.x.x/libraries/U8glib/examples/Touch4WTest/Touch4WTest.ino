@@ -1,8 +1,6 @@
 /*
 
-  HelloWorld.pde
-  
-  "Hello World!" example code.
+  Touch4WTest.pde
   
   >>> Before compiling: Please remove comment from the constructor of the 
   >>> connected graphics display (see below).
@@ -42,8 +40,8 @@
 #include "U8glib.h"
 
 // setup u8g object, please remove comment from one of the following constructor calls
-// IMPORTANT NOTE: The complete list of supported devices is here: http://code.google.com/p/u8glib/wiki/device
-
+// IMPORTANT NOTE: The following list is incomplete. The complete list of supported 
+// devices with all constructor calls is here: http://code.google.com/p/u8glib/wiki/device
 //U8GLIB_NHD27OLED_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_2X_BW u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_NHD27OLED_GR u8g(13, 11, 10, 9);	// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
@@ -55,6 +53,7 @@
 //U8GLIB_DOGS102 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM132 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_DOGM128 u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
+//U8GLIB_DOGM128_2X u8g(13, 11, 10, 9);		// SPI Com: SCK = 13, MOSI = 11, CS = 10, A0 = 9
 //U8GLIB_ST7920_128X64_1X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_4X u8g(8, 9, 10, 11, 4, 5, 6, 7, 18, 17, 16);   // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7 en=18, di=17,rw=16
 //U8GLIB_ST7920_128X64_1X u8g(18, 16, 17);	// SPI Com: SCK = en = 18, MOSI = rw = 16, CS = di = 17
@@ -97,56 +96,217 @@
 //U8GLIB_T6963_240X128 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_240X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
 //U8GLIB_T6963_128X64 u8g(8, 9, 10, 11, 4, 5, 6, 7, 14, 15, 17, 18, 16); // 8Bit Com: D0..D7: 8,9,10,11,4,5,6,7, cs=14, a0=15, wr=17, rd=18, reset=16
+//U8GLIB_HT1632_24X16 u8g(3, 2, 4);		// WR = 3, DATA = 2, CS = 4
+//U8GLIB_SSD1351_128X128_332 u8g(13, 11, 8, 9, 7); // Arduino UNO: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_332 u8g(8, 9, 7); // Arduino: HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(76, 75, 8, 9, 7); // Arduino DUE: SW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_332 u8g(8, 9, 7); // Arduino : HW SPI Com: SCK = 13, MOSI = 11, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, SW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(76, 75, 8, 9, 7); // Arduino DUE, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128_4X_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com, 4x Memory: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (http://electronics.ilsoft.co.uk/ArduinoShield.aspx)
+//U8GLIB_SSD1351_128X128GH_332 u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
+//U8GLIB_SSD1351_128X128GH_HICOLOR u8g(8, 9, 7); // Arduino, HW SPI Com: SCK = 76, MOSI = 75, CS = 8, A0 = 9, RESET = 7 (Freetronics OLED)
 
-uint8_t offset = 0;
+//================================================================
+// Setup 4-Wire Resistive Touch Panel
 
-void draw(void) {
-  // graphic commands to redraw the complete screen should be placed here  
-  u8g.setFont(u8g_font_unifont);
-  u8g.drawStr( 0+0, 20+0, "Hello!");
-  u8g.drawStr( 0+2, 20+16, "Hello!");
+uint8_t tp_left = A3;
+uint8_t tp_right = A5;
+uint8_t tp_top = A4;
+uint8_t tp_bottom = A2;
+
+/* Run "Touch4WSetup" and enter values here */
+#define X_START 64
+#define X_END 200
+#define Y_START 105
+#define Y_END 160  
+
+//================================================================
+// Touch Panel Code
+
+/* touch panel dimension */
+struct tpd_struct
+{
+  /* raw value */
+  uint8_t raw;
   
-  u8g.drawBox(0, 0, 3, 3);
-  u8g.drawBox(u8g.getWidth()-6, 0, 6, 6);
-  u8g.drawBox(u8g.getWidth()-9, u8g.getHeight()-9, 9, 9);
-  u8g.drawBox(0, u8g.getHeight()-12, 12, 12);  
-}
-
-void setup(void) {
-}
-
-
-void rotate(void) {
-  static  uint8_t dir = 0;
-  static  unsigned long next_rotation = 0;
+  /* calibration values  */
+  uint8_t start;
+  uint8_t end;		
   
-  if ( next_rotation < millis() )
+  /* user values */
+  uint8_t range;	/* result will have range fron 0..range  (including the value of range) */
+  
+  uint8_t result;	/* output value: position [0...range] */
+  uint8_t is_pressed;	/* output value: pressed (=1) or not pressed (=0) */
+  uint8_t is_update;	/* will be set to 1 if result or is_pressed has been updated */
+};
+
+struct tp_struct
+{
+  struct tpd_struct x;
+  struct tpd_struct y;
+  uint8_t is_pressed; /* combination of x.is_pressed && y.is_pressed */
+  uint8_t is_update;
+};
+
+struct tp_struct tp;
+
+/* map raw value to 0...range (result) */
+void tpd_map_touch_position(struct tpd_struct *d, uint8_t raw)
+{
+  uint8_t is_pressed;
+  uint16_t p;
+  uint8_t start, end;
+  
+  d->raw = raw;
+  
+  start = d->start;
+  end = d->end;
+
+  /* check if position is within active area; store result in "is_pressed" */
+  is_pressed = 1;  
+  if ( raw < start )
   {
-    switch(dir) {
-      case 0: u8g.undoRotation(); break;
-      case 1: u8g.setRot90(); break;
-      case 2: u8g.setRot180(); break;
-      case 3: u8g.setRot270(); offset = ( offset + 1 ) & 0x0f; break;
-    }
+    d->result = 0;
+    is_pressed = 0;
+  }
+  if ( raw >= end )
+  {
+    d->result = d->range;
+    is_pressed = 0;
+  }
+  
+  /* store "is_pressed" in the global structure, set update flag */
+  if ( d->is_pressed != is_pressed )
+    d->is_update = 1;
+  d->is_pressed = is_pressed;
     
-    dir++;
-    dir &= 3;
-    next_rotation = millis();
-    next_rotation += 1000;
+  /* map "raw" value into target range */
+  if ( is_pressed != 0 )
+  {    
+    p = raw;
+    p -= start;
+    p *= d->range;
+    end -= start;
+    p /= end;
+
+    if ( d->result != p )
+      d->is_update = 1;
+    d->result = p;
   }
 }
 
+void tp_Init(uint8_t width, uint8_t height)
+{
+  tp.x.start = X_START;
+  tp.x.end = X_END;
+  tp.x.range = width-1;
+  
+  tp.y.start = Y_START;
+  tp.y.end = Y_END;
+  tp.y.range = height-1;
+  
+  tp.is_update = 1;
+}
+
+void setTouchRawValues(uint8_t x, uint8_t y)
+{
+      tpd_map_touch_position(&(tp.x), x);
+      tpd_map_touch_position(&(tp.y), y);
+      
+      tp.is_pressed = tp.x.is_pressed && tp.y.is_pressed;
+      if ( tp.x.is_update || tp.y.is_update )
+	tp.is_update = 1;
+}
+
+
+uint8_t getTouchPos(uint8_t hiPin, uint8_t lowPin, uint8_t sensePin, uint8_t dcPin)
+{
+  uint8_t val;
+  pinMode(dcPin, INPUT);
+  pinMode(sensePin, INPUT_PULLUP);
+  pinMode(hiPin, OUTPUT);
+  pinMode(lowPin, OUTPUT);  
+  
+  digitalWrite(hiPin, HIGH);
+  digitalWrite(lowPin, LOW);
+  delay(10);
+  val = analogRead(sensePin) >> 2;
+  pinMode(hiPin, INPUT);
+  pinMode(lowPin, INPUT);  
+  delay(10);
+  return val;
+}
+
+void updateTouchPanel(void)
+{
+  uint8_t tp_raw_x;
+  uint8_t tp_raw_y;
+
+  tp_raw_x = getTouchPos(tp_right, tp_left, tp_bottom, tp_top);
+  tp_raw_y = getTouchPos(tp_top, tp_bottom, tp_left, tp_right);
+  
+  setTouchRawValues(tp_raw_x, tp_raw_y);  
+}
+
+//================================================================
+// graphics output and picture loop
+
+void center(u8g_uint_t y, const char *str)
+{
+  u8g_uint_t x;
+  x = u8g.getWidth();
+  x -= u8g.getStrWidth(str);
+  x /= 2;
+  u8g.drawStr(x, y, str);
+}
+
+
+void draw(void) {
+  u8g.setFont(u8g_font_6x10);
+  center( 10, "Touch Panel Test");
+  if ( tp.is_pressed != 0 )
+  {
+    u8g.setPrintPos(0, 20); u8g.print("x=");u8g.print((int)tp.x.result);
+    u8g.setPrintPos(0, 30); u8g.print("y=");u8g.print((int)(u8g.getHeight()-tp.y.result-1));
+    //u8g.setPrintPos(0, 40); u8g.print("x: ");u8g.print((int)tp.x.start);u8g.print("..");u8g.print((int)tp.x.end);
+    //u8g.setPrintPos(0, 50); u8g.print("y: ");u8g.print((int)tp.y.start);u8g.print("..");u8g.print((int)tp.y.end);
+  }
+}
+
+void setup(void) {
+  
+  // flip screen, if required
+  // u8g.setRot180();
+  u8g.setCursorFont(u8g_font_cursor);
+  u8g.setCursorStyle(32);
+  
+  tp_Init(u8g.getWidth(), u8g.getHeight());  
+}
+
 void loop(void) {
-  // screen rotation 
-  rotate();
+  
+  // update touch panel and handle return values
+  updateTouchPanel();
+  
+  if ( tp.is_pressed != 0 )
+    u8g.enableCursor();
+  else
+    u8g.disableCursor();
+  
+  u8g.setCursorPos(tp.x.result, u8g.getHeight()-tp.y.result-1);
   
   // picture loop
-  u8g.firstPage();  
-  do {
-    draw();
-  } while( u8g.nextPage() );
+  if ( tp.is_update != 0 ) {
+    tp.is_update = 0;
+    u8g.firstPage();  
+    do {
+      draw();
+    } while( u8g.nextPage() );
+  }
   
-  // rebuild the picture after some delay
-  delay(100);
 }
 
