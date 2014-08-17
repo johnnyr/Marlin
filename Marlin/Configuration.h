@@ -663,7 +663,7 @@ const bool Z_MAX_ENDSTOP_INVERTING = true; // set to true to invert the logic of
   #define DEFAULT_LCD_CONTRAST 28
   #define ENCODER_PULSES_PER_STEP 2 // Increase if you have a high resolution encoder
   #define ENCODER_STEPS_PER_MENU_ITEM 1 // Set according to ENCODER_PULSES_PER_STEP or your liking
-
+  #define U8G_HW_SPI_2X
 #endif
 
 // Shift register panels
