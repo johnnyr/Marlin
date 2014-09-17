@@ -2244,7 +2244,7 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
     #define HEATER_0_PIN 3
     #define HEATER_BED_PIN 4
     #define FAN_1_PIN 6
-    #define PS_ON_PIN 71
+    #define PS_ON_PIN 74
     #define MOTOR_CURRENT_PWM_XY_PIN 44
     #define MOTOR_CURRENT_PWM_Z_PIN 45
     #define MOTOR_CURRENT_PWM_E_PIN 46
