@@ -2267,8 +2267,8 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
       #define BLEN_C 2
       #define BLEN_B 1
       #define BLEN_A 0
-      #define SDCARDDETECT -1 //53
-      #define SDSS 72
+      #define SDCARDDETECT 72 //53
+      #define SDSS 53
       //encoder rotation values
       #define encrot0 0
       #define encrot1 2
