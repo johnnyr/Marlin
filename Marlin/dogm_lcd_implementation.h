@@ -33,6 +33,7 @@
 #define LCD_CLICKED (buttons&EN_C)
 #endif
 
+
 #include <U8glib.h>
 #include "DOGMbitmaps.h"
 #include "dogm_font_data_marlin.h"
@@ -129,19 +130,19 @@ static void lcd_implementation_init()
 			u8g.drawBitmapP(0,0,START_BMPBYTEWIDTH,START_BMPHEIGHT,start_bmp);
 			// Welcome message
 			u8g.setFont(u8g_font_6x10_marlin);
-			u8g.drawStr(62,10,"MARLIN"); 
+			u8g.drawStr(62,10,"ORION"); 
 			u8g.setFont(u8g_font_5x8);
-			u8g.drawStr(62,19,"V1.0.0 RC2-mm");
+			u8g.drawStr(62,19,"by SEEMECNC");
 			u8g.setFont(u8g_font_6x10_marlin);
-			u8g.drawStr(62,28,"by ErikZalm");
-			u8g.drawStr(62,41,"DOGM128 LCD");
+			u8g.drawStr(62,28,"MIREGLI LCD");
+			u8g.drawStr(62,41,"and");
 			u8g.setFont(u8g_font_5x8);
-			u8g.drawStr(62,48,"enhancements");
+			u8g.drawStr(62,48,"MINI-RAMBO");
 			u8g.setFont(u8g_font_5x8);
-			u8g.drawStr(62,55,"by STB, MM");
-			u8g.drawStr(62,61,"uses u");
-			u8g.drawStr90(92,57,"8");
-			u8g.drawStr(100,61,"glib");
+			u8g.drawStr(62,54,"by");
+			u8g.drawStr(62,61,"ULTIMACHINE");
+			u8g.drawStr90(92,57,"");
+			u8g.drawStr(100,61,"");
 	   } while( u8g.nextPage() );
 }
 
@@ -160,6 +161,8 @@ static void lcd_implementation_clear()
 }
 
 /* Arduino < 1.0.0 is missing a function to print PROGMEM strings, so we need to implement our own */
+
+
 static void lcd_printPGM(const char* str)
 {
     char c;
@@ -170,6 +173,7 @@ static void lcd_printPGM(const char* str)
 }
 
 
+
 static void lcd_implementation_status_screen()
 {
 
@@ -178,8 +182,13 @@ static void lcd_implementation_status_screen()
  u8g.setColorIndex(1);	// black on white
  
  // Symbols menu graphics, animated fan
+ 
+/* REMOVING FAN ANIMATION FROM STATUS SCREEN AND JUST HAVING FAN SYMBOL IN TOP RIGHT CORNER FOR NOW
+
  if ((blink % 2) &&  fanSpeed )	u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen0_bmp);
 	else u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen1_bmp);
+*/	
+ u8g.drawBitmapP(9,1,STATUS_SCREENBYTEWIDTH,STATUS_SCREENHEIGHT,status_screen1_bmp);	
  
  #ifdef SDSUPPORT
  //SD Card Symbol
@@ -211,7 +220,7 @@ static void lcd_implementation_status_screen()
 		u8g.print(':');
 		u8g.print(itostr2(time%60));
     }else{
-			lcd_printPGM(PSTR("--:--"));
+			lcd_printPGM(PSTR("N/A"));  
 		 }
  #endif
  
@@ -230,6 +239,10 @@ static void lcd_implementation_status_screen()
 		 u8g.drawBox(13,17,2,2);
 		 u8g.setColorIndex(1);	// black on white
 		}
+ 
+ 
+ /*   REMOVING EXT 2 AND 3 FROM STATUS SCREEN
+ 
  
  // Extruder 2
  u8g.setFont(FONT_STATUSMENU);
@@ -272,15 +285,18 @@ static void lcd_implementation_status_screen()
  u8g.setPrintPos(55,27);
  u8g.print("---");
  #endif
+ */
+ 
+ 
  
  // Heatbed
  u8g.setFont(FONT_STATUSMENU);
  u8g.setPrintPos(81,6);
  u8g.print(itostr3(int(degTargetBed() + 0.5)));
- lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+ lcd_printPGM(PSTR(LCD_STR_DEGREE " "));  
  u8g.setPrintPos(81,27);
  u8g.print(itostr3(int(degBed() + 0.5)));
- lcd_printPGM(PSTR(LCD_STR_DEGREE " "));
+ lcd_printPGM(PSTR(LCD_STR_DEGREE " "));  
  if (!isHeatingBed()) u8g.drawBox(88,18,2,2);
 	else
 		{
@@ -288,6 +304,9 @@ static void lcd_implementation_status_screen()
 		 u8g.drawBox(88,18,2,2);
 		 u8g.setColorIndex(1);	// black on white
 		}
+ 
+ 
+ /* REMOVING FAN PERCENTAGE FROM STATUS SCREEN
  
  // Fan
  u8g.setFont(FONT_STATUSMENU);
@@ -299,11 +318,14 @@ static void lcd_implementation_status_screen()
  u8g.print("---");
  #endif
  
+ */
+ 
  
  // X, Y, Z-Coordinates
  u8g.setFont(FONT_STATUSMENU);
  u8g.drawBox(0,29,128,10);
  u8g.setColorIndex(0);	// white on black
+/* REMOVING X AND Y COORDINATES FROM STATUS SCREEN 
  u8g.setPrintPos(2,37);
  u8g.print("X");
  u8g.drawPixel(8,33);
@@ -316,6 +338,12 @@ static void lcd_implementation_status_screen()
  u8g.drawPixel(49,35);
  u8g.setPrintPos(51,37);
  u8g.print(ftostr31ns(current_position[Y_AXIS]));
+ */
+ // ADDING NAME TO HOMESCREEN
+ u8g.setPrintPos(2,37);
+ u8g.print("NOZZLE HEIGHT");
+ 
+ 
  u8g.setPrintPos(83,37);
  u8g.print("Z");
  u8g.drawPixel(89,33);
