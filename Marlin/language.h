@@ -43,16 +43,16 @@
 	#ifdef CUSTOM_MENDEL_NAME
 		#define MACHINE_NAME CUSTOM_MENDEL_NAME
 	#else
-		#define MACHINE_NAME "Mendel"
+		#define MACHINE_NAME "Orion"
 	#endif
 
 // Default firmware set to Mendel
-	#define FIRMWARE_URL "https://github.com/ErikZalm/Marlin/"
+	#define FIRMWARE_URL "https://github.com/seemecnc/Marlin"
 #endif
 
 
 #ifndef MACHINE_UUID
-   #define MACHINE_UUID "00000000-0000-0000-0000-000000000000"
+   #define MACHINE_UUID "1"
 #endif
 
 
