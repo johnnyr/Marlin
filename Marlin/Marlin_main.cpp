@@ -313,6 +313,9 @@ unsigned long starttime=0;
 unsigned long stoptime=0;
 
 static uint8_t tmp_extruder;
+#ifdef alt_homing_kill
+static boolean killreset = 0; //for verifying if kill switch active at boot
+#endif
 
 
 bool Stopped=false;
@@ -3464,10 +3467,30 @@ void manage_inactivity()
     }
   #endif
   
-  #if defined(KILL_PIN) && KILL_PIN > -1
-    if( 0 == READ(KILL_PIN) )
-      kill();
+   #if defined(KILL_PIN) && KILL_PIN > -1
+    #if defined alt_homing_kill
+      if( 0 == READ(KILL_PIN)) {
+        if( killreset == 1) { //has kill pin been high since boot?
+          cli(); // Stop interrupts
+          disable_heater();
+          disable_x();
+          disable_y();
+          disable_z();
+          disable_e0();
+          disable_e1();
+          disable_e2();
+          while(1) { /* Intentionally left empty */ }; // Wait for reset
+        }
+      }
+      else {
+        killreset == 1;
+      }
+    #else
+      if( 0 == READ(KILL_PIN))
+        kill();
+    #endif
   #endif
+
   #if defined(CONTROLLERFAN_PIN) && CONTROLLERFAN_PIN > -1
     controllerFan(); //Check if fan should be turned on to cool stepper drivers down
   #endif

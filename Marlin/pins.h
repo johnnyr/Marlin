@@ -2244,13 +2244,16 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
     #define HEATER_0_PIN 3
     #define HEATER_BED_PIN 4
     #define FAN_1_PIN 6
-    #define PS_ON_PIN 74
-    #define MOTOR_CURRENT_PWM_XY_PIN 46
+    #define PS_ON_PIN 71
+    #define MOTOR_CURRENT_PWM_XY_PIN 44
     #define MOTOR_CURRENT_PWM_Z_PIN 45
-    #define MOTOR_CURRENT_PWM_E_PIN 44
+    #define MOTOR_CURRENT_PWM_E_PIN 46
     //Motor current PWM conversion, PWM value = MotorCurrentSetting * 255 / range
     #define MOTOR_CURRENT_PWM_RANGE 2000
-    #define DEFAULT_PWM_MOTOR_CURRENT  {1000, 1000, 1000}
+    #define DEFAULT_PWM_MOTOR_CURRENT  {1200, 1200, 1150}
+    #ifdef alt_homing_kill
+      #define KILL_PIN 51 //using MOSI pin for now. this will conflict with SPI devices
+    #endif
     #ifdef MIREGLI
       // Pins for DOGM SPI LCD Support
       #define DOGLCD_A0  38
@@ -2267,8 +2270,8 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
       #define BLEN_C 2
       #define BLEN_B 1
       #define BLEN_A 0
-      #define SDCARDDETECT 72 //53
-      #define SDSS 53
+      #define SDCARDDETECT -1 //53
+      #define SDSS 72
       //encoder rotation values
       #define encrot0 0
       #define encrot1 2

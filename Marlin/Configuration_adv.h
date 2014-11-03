@@ -493,5 +493,7 @@ const unsigned int dropsegments=5; //everything with less than this number of st
   #undef BED_MAXTEMP
 #endif
 
+// Changes kill switch behaviour to trigger watchdog reset and not block operation until released
+#define alt_homing_kill
 
 #endif //__CONFIGURATION_ADV_H
