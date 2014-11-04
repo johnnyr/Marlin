@@ -3479,11 +3479,15 @@ void manage_inactivity()
           disable_e0();
           disable_e1();
           disable_e2();
+          SERIAL_ERROR_START;
+          SERIAL_ERRORLNPGM(MSG_ERR_KILLED);
+          LCD_ALERTMESSAGEPGM(MSG_KILLED);
+
           while(1) { /* Intentionally left empty */ }; // Wait for reset
         }
       }
       else {
-        killreset == 1;
+        killreset = 1;
       }
     #else
       if( 0 == READ(KILL_PIN))
