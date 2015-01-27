@@ -2263,22 +2263,44 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
 #define FAN_1_PIN 6
 #define PS_ON_PIN 71
 
-#else
+#ifdef ULTRA_LCD
+  #define KILL_PIN 32
+  #ifdef NEWPANEL
+   //arduino pin which triggers an piezzo beeper
+    #define BEEPER 84      // Beeper on AUX-4
+    #define LCD_PINS_RS 82
+    #define LCD_PINS_ENABLE 18
+    #define LCD_PINS_D4 19
+    #define LCD_PINS_D5 70
+    #define LCD_PINS_D6 85
+    #define LCD_PINS_D7 71
+
+    //buttons are directly attached using AUX-2
+    #define BTN_EN1 14
+    #define BTN_EN2 72
+    #define BTN_ENC 9  //the click
+
+    #define BLEN_C 2
+    #define BLEN_B 1
+    #define BLEN_A 0
+
+    #define SDCARDDETECT 15
+
+    //encoder rotation values
+    #define encrot0 0
+    #define encrot1 2
+    #define encrot2 3
+    #define encrot3 1
+  #endif
+#endif //ULTRA_LCD
+
+
+#else //Rambo
 #define DIGIPOTSS_PIN 38
 #define DIGIPOT_CHANNELS {4,5,3,0,1} // X Y Z E0 E1 digipot channels to stepper driver mapping
 #define HEATER_0_PIN  9
 #define HEATER_BED_PIN 3
 #define PS_ON_PIN          4
-
-#endif
-
-#define SDPOWER            -1
-#define SDSS               53
-#define LED_PIN            13
-#define FAN_PIN            8
-#define KILL_PIN           -1 //80 with Smart Controller LCD
-#define SUICIDE_PIN        -1  //PIN that has to be turned on right after start, to keep power flowing.
-
 #ifdef ULTRA_LCD
   #define KILL_PIN 80
   #ifdef NEWPANEL
@@ -2342,6 +2364,16 @@ DaveX plan for Teensylu/printrboard-type pinouts (ref teensylu & sprinter) for a
     #define BLEN_A 0
   #endif
 #endif //ULTRA_LCD
+
+#endif
+
+#define SDPOWER            -1
+#define SDSS               53
+#define LED_PIN            13
+#define FAN_PIN            8
+#define KILL_PIN           -1 //80 with Smart Controller LCD
+#define SUICIDE_PIN        -1  //PIN that has to be turned on right after start, to keep power flowing.
+
 
 
 #endif
